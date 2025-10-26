@@ -1,3 +1,5 @@
+"""Domain service orchestrating task operations."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -6,21 +8,23 @@ from typing import Any, Dict, Iterable
 
 from ..models.task import PRIORITY_ENUM, STATUS_ENUM, Task
 from ..repositories.task_repository import TaskRepository
+from ..repositories.user_repository import UserRepository
 
 
 class NotFoundError(Exception):
-
+    """Raised when an entity could not be located."""
 
 
 class ValidationError(Exception):
-
+    """Raised when input payload does not satisfy validation rules."""
 
 
 @dataclass(slots=True)
 class TaskService:
-
+    """Application service for CRUD operations on :class:`Task`."""
 
     repository: TaskRepository
+    user_repository: UserRepository
 
     def list_tasks(self) -> Iterable[Task]:
         return self.repository.get_all()
@@ -36,7 +40,7 @@ class TaskService:
         if user_id is None:
             raise ValidationError("user_id is required.")
 
-        if not self.repository.get_user_by_id(user_id):
+        if not self.user_repository.get_by_id(user_id):
             raise NotFoundError("User not found.")
 
         status = data.get("status", "pending")
@@ -105,4 +109,6 @@ class TaskService:
         try:
             return date.fromisoformat(str(value))
         except (TypeError, ValueError) as exc:
-            raise ValidationError("Invalid due_date format. Use ISO format (YYYY-MM-DD).") from exc
+            raise ValidationError(
+                "Invalid due_date format. Use ISO format (YYYY-MM-DD)."
+            ) from exc
