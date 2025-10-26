@@ -1,4 +1,3 @@
-"""Domain service orchestrating task operations."""
 
 from __future__ import annotations
 
@@ -12,16 +11,14 @@ from ..repositories.user_repository import UserRepository
 
 
 class NotFoundError(Exception):
-    """Raised when an entity could not be located."""
+
 
 
 class ValidationError(Exception):
-    """Raised when input payload does not satisfy validation rules."""
 
 
 @dataclass(slots=True)
 class TaskService:
-    """Application service for CRUD operations on :class:`Task`."""
 
     repository: TaskRepository
     user_repository: UserRepository

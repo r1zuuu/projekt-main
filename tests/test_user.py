@@ -1,5 +1,3 @@
-"""Integration tests covering the user endpoints."""
-
 from __future__ import annotations
 
 

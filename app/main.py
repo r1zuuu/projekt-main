@@ -1,4 +1,3 @@
-"""Application entry point for running the Flask development server."""
 from __future__ import annotations
 
 from . import create_app

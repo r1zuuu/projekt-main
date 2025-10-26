@@ -1,4 +1,4 @@
-"""Application configuration objects."""
+
 
 from __future__ import annotations
 
@@ -10,8 +10,6 @@ from dotenv import load_dotenv
 
 
 def _load_environment() -> None:
-    """Load variables from a local ``.env`` file if it exists."""
-
     env_path = Path(__file__).resolve().parent.parent / ".env"
     if env_path.exists():
         load_dotenv(env_path, override=False)
@@ -29,7 +27,7 @@ class Config:
     JSON_SORT_KEYS: bool = field(default=False, init=False)
     SECRET_KEY: str = field(default="dev-secret", init=False)
 
-    def __post_init__(self) -> None:  # pragma: no cover - trivial assignments
+    def __post_init__(self) -> None: 
         _load_environment()
         self.SQLALCHEMY_DATABASE_URI = os.getenv(
             "DATABASE_URL",
@@ -40,8 +38,6 @@ class Config:
 
 @dataclass(slots=True)
 class TestingConfig(Config):
-    """Configuration used by the automated test-suite."""
-
     TESTING: bool = field(default=True, init=False)
     SQLALCHEMY_DATABASE_URI: str = field(default="sqlite:///:memory:", init=False)
     PROPAGATE_EXCEPTIONS: bool = field(default=True, init=False)

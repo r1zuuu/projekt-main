@@ -1,10 +1,8 @@
-"""Application factory for projektPINGUIN."""
 from flask import Flask
 from .config import Config
 from .models import db
 
 def create_app(config_object: type[Config] | None = None) -> Flask:
-    """Create and configure the Flask application."""
     app = Flask(__name__)
     config_cls = config_object or Config
     app.config.from_object(config_cls())
@@ -12,7 +10,7 @@ def create_app(config_object: type[Config] | None = None) -> Flask:
     db.init_app(app)
 
     with app.app_context():
-        from .models import task, user  # noqa: F401  pylint: disable=unused-import
+        from .models import task, user
         db.create_all()
 
         from .repositories.task_repository import TaskRepository

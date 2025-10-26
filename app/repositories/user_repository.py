@@ -1,4 +1,3 @@
-"""Persistence helpers for the :class:`~app.models.user.User` entity."""
 
 from __future__ import annotations
 
@@ -10,7 +9,6 @@ from ..models.user import User
 
 
 class UserRepository:
-    """Repository responsible for basic :class:`User` CRUD operations."""
 
     def __init__(self, session: Session) -> None:
         self._session = session

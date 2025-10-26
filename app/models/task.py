@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Enum
+from sqlalchemy import Enum 
 
 from . import db
 

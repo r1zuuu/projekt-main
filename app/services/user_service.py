@@ -11,21 +11,19 @@ from ..repositories.user_repository import UserRepository
 
 
 class AuthenticationError(Exception):
-    """Raised when the provided credentials are invalid."""
+    """Invalid credentials"""
 
 
 class DuplicateUserError(Exception):
-    """Raised when attempting to create a user with an existing username."""
+    """When duplicated username"""
 
 
 class ValidationError(Exception):
-    """Raised when incoming payload fails validation rules."""
+    """incoming payload fails validation rules."""
 
 
 @dataclass(slots=True)
 class UserService:
-    """Orchestrates operations on the :class:`User` aggregate."""
-
     repository: UserRepository
 
     def register(self, username: str | None, password: str | None) -> User:
