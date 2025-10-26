@@ -1,4 +1,4 @@
-"""Pytest fixtures for the projekt application."""
+
 
 from __future__ import annotations
 
@@ -24,8 +24,6 @@ def app():
         yield app
         db.session.remove()
         db.drop_all()
-
-
 @pytest.fixture()
-def client(app):  # type: ignore[override]
+def client(app):  
     return app.test_client()
