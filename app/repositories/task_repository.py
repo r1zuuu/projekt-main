@@ -5,7 +5,6 @@ from typing import Iterable, Optional
 from sqlalchemy.orm import Session
 
 from ..models.task import Task
-from ..models.user import User
 
 
 class TaskRepository:
@@ -28,9 +27,6 @@ class TaskRepository:
     def delete(self, task: Task) -> None:
         self._session.delete(task)
         self._session.commit()
-
-    def get_user_by_id(self, user_id: int) -> Optional[User]:
-        return self._session.get(User, user_id)
 
     def save(self) -> None:
         self._session.commit()

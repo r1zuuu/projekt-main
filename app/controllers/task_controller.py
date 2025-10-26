@@ -3,10 +3,11 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import Any
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from werkzeug.exceptions import HTTPException
 
 from ..services.task_service import NotFoundError, TaskService, ValidationError
+from ..auth.decorators import login_required
 
 
 def create_task_blueprint(task_service: TaskService) -> Blueprint:
@@ -36,8 +37,10 @@ def create_task_blueprint(task_service: TaskService) -> Blueprint:
         return jsonify(tasks), HTTPStatus.OK
 
     @blueprint.route("/", methods=["POST"])
+    @login_required
     def create_task():
         payload: dict[str, Any] = request.get_json(force=True, silent=True) or {}
+        payload.setdefault("user_id", session["user_id"])
         task = task_service.create_task(payload)
         return jsonify(task.to_dict()), HTTPStatus.CREATED
 
@@ -47,12 +50,14 @@ def create_task_blueprint(task_service: TaskService) -> Blueprint:
         return jsonify(task.to_dict()), HTTPStatus.OK
 
     @blueprint.route("/<int:task_id>", methods=["PUT"])
+    @login_required
     def update_task(task_id: int):
         payload: dict[str, Any] = request.get_json(force=True, silent=True) or {}
         task = task_service.update_task(task_id, payload)
         return jsonify(task.to_dict()), HTTPStatus.OK
 
     @blueprint.route("/<int:task_id>", methods=["DELETE"])
+    @login_required
     def delete_task(task_id: int):
         task_service.delete_task(task_id)
         return jsonify({"message": "Task deleted successfully."}), HTTPStatus.OK
